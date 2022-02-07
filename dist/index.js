@@ -60,10 +60,10 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 const sdk_1 = __nccwpck_require__(3429);
+const path_1 = __nccwpck_require__(5622);
 const fs_1 = __nccwpck_require__(5747);
 const core_1 = __importDefault(__nccwpck_require__(2186));
 const pngjs_1 = __nccwpck_require__(6413);
-const path_1 = __nccwpck_require__(5622);
 /**
  * Get all directory names within `source`
  * @param source The source directory
@@ -109,6 +109,10 @@ const run = () => __awaiter(void 0, void 0, void 0, function* () {
             const folderPath = (0, path_1.join)(rootPath, folder);
             const files = yield fs_1.promises.readdir(folderPath);
             for (const file of files) {
+                // Ignore non-PNG files in directory
+                if ((0, path_1.extname)(file) !== '.png') {
+                    continue;
+                }
                 const image = yield readPngImage((0, path_1.join)(folderPath, file));
                 encoder.encodeImage(file.replace(/\.png$/, ''), image, folder.replace(/^\d-/, ''));
             }

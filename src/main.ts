@@ -1,8 +1,8 @@
 import { PNGCollectionEncoder, PngImage } from '@nouns/sdk';
+import { extname, join } from 'path';
 import { promises as fs } from 'fs';
 import core from '@actions/core';
 import { PNG } from 'pngjs';
-import { join } from 'path';
 
 /**
  * Get all directory names within `source`
@@ -54,6 +54,11 @@ const run = async (): Promise<void> => {
       const folderPath = join(rootPath, folder);
       const files = await fs.readdir(folderPath);
       for (const file of files) {
+        // Ignore non-PNG files in directory
+        if (extname(file) !== '.png') {
+          continue;
+        }
+
         const image = await readPngImage(join(folderPath, file));
         encoder.encodeImage(file.replace(/\.png$/, ''), image, folder.replace(/^\d-/, ''));
       }
