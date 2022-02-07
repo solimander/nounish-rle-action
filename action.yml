@@ -1,11 +1,13 @@
-name: 'Your name here'
-description: 'Provide a description here'
-author: 'Your name or organization here'
+name: 'Nounish RLE Action'
+description: 'Run-length encode 32x32 PNG Noun trait images and write the result to a file'
+author: 'solimander'
 inputs:
-  milliseconds: # change this
+  rootDirectoryPath:
     required: true
-    description: 'input description here'
-    default: 'default value if applicable'
+    description: 'Path to the directory that contains the Noun part folders'
+  outputPath:
+    required: true
+    description: 'Path to output the run-length encoded Noun data'
 runs:
-  using: 'node12'
+  using: 'node14'
   main: 'dist/index.js'
