@@ -44,9 +44,10 @@ const run = async (): Promise<void> => {
   const encoder = new PNGCollectionEncoder();
 
   try {
-    const outputPath = core.getInput('outputPath');
+    const workspace = process.env.GITHUB_WORKSPACE ?? '';
 
-    const rootPath = core.getInput('rootDirectoryPath');
+    const outputPath = join(workspace, core.getInput('outputPath'));
+    const rootPath = join(workspace, core.getInput('rootDirectoryPath'));
     const partFolders = await getDirectories(rootPath);
 
     for (const folder of partFolders) {

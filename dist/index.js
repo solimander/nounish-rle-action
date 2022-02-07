@@ -98,10 +98,12 @@ const readPngImage = (path) => __awaiter(void 0, void 0, void 0, function* () {
  * Run the Github action, converting all PNG image data into a single RLE output file.
  */
 const run = () => __awaiter(void 0, void 0, void 0, function* () {
+    var _a;
     const encoder = new sdk_1.PNGCollectionEncoder();
     try {
-        const outputPath = core_1.default.getInput('outputPath');
-        const rootPath = core_1.default.getInput('rootDirectoryPath');
+        const workspace = (_a = process.env.GITHUB_WORKSPACE) !== null && _a !== void 0 ? _a : '';
+        const outputPath = (0, path_1.join)(workspace, core_1.default.getInput('outputPath'));
+        const rootPath = (0, path_1.join)(workspace, core_1.default.getInput('rootDirectoryPath'));
         const partFolders = yield getDirectories(rootPath);
         for (const folder of partFolders) {
             const folderPath = (0, path_1.join)(rootPath, folder);
