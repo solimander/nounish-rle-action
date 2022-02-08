@@ -64,17 +64,16 @@ const run = async (): Promise<void> => {
       }
     }
 
-    await fs.writeFile(
-      outputPath,
-      JSON.stringify(
-        {
-          bgcolors: ['d5d7e1', 'e1d7d5'],
-          ...encoder.data,
-        },
-        null,
-        2,
-      ),
+    const data = JSON.stringify(
+      {
+        bgcolors: ['d5d7e1', 'e1d7d5'],
+        ...encoder.data,
+      },
+      null,
+      2,
     );
+
+    await fs.writeFile(outputPath, `${data}\n`);
   } catch (error) {
     if (error instanceof Error) {
       core.setFailed(error.message);

@@ -133,7 +133,8 @@ const run = () => __awaiter(void 0, void 0, void 0, function* () {
                 encoder.encodeImage(file.replace(/\.png$/, ''), image, folder.replace(/^\d-/, ''));
             }
         }
-        yield fs_1.promises.writeFile(outputPath, JSON.stringify(Object.assign({ bgcolors: ['d5d7e1', 'e1d7d5'] }, encoder.data), null, 2));
+        const data = JSON.stringify(Object.assign({ bgcolors: ['d5d7e1', 'e1d7d5'] }, encoder.data), null, 2);
+        yield fs_1.promises.writeFile(outputPath, `${data}\n`);
     }
     catch (error) {
         if (error instanceof Error) {
