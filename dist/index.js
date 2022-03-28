@@ -114,12 +114,13 @@ const readPngImage = (path) => __awaiter(void 0, void 0, void 0, function* () {
  * Run the Github action, converting all PNG image data into a single RLE output file.
  */
 const run = () => __awaiter(void 0, void 0, void 0, function* () {
-    var _a;
-    const encoder = new sdk_1.PNGCollectionEncoder();
+    var _a, _b;
     try {
         const workspace = (_a = process.env.GITHUB_WORKSPACE) !== null && _a !== void 0 ? _a : '';
         const outputPath = (0, path_1.join)(workspace, core.getInput('outputPath'));
         const rootPath = (0, path_1.join)(workspace, core.getInput('rootDirectoryPath'));
+        const existingPalette = (_b = core.getInput('existingPalette')) === null || _b === void 0 ? void 0 : _b.split(',');
+        const encoder = new sdk_1.PNGCollectionEncoder(existingPalette);
         const partFolders = yield getDirectories(rootPath);
         for (const folder of partFolders) {
             const folderPath = (0, path_1.join)(rootPath, folder);
@@ -23956,11 +23957,13 @@ const image_1 = __nccwpck_require__(2946);
  * Palette Index, Bounds [Top (Y), Right (X), Bottom (Y), Left (X)] (4 Bytes), [Pixel Length (1 Byte), Color Index (1 Byte)][].
  */
 class PNGCollectionEncoder {
-    constructor() {
+    constructor(colors) {
         this._transparent = ['', 0];
         this._colors = new Map([this._transparent]);
         this._images = new Map();
         this._folders = {};
+        // Optionally pre-populate colors with an existing palette
+        colors === null || colors === void 0 ? void 0 : colors.forEach((color, index) => this._colors.set(color, index));
     }
     /**
      * The flattened run-length encoded image data

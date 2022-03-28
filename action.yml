@@ -8,6 +8,9 @@ inputs:
   outputPath:
     required: true
     description: 'Path to output the run-length encoded Noun data'
+  existingPalette:
+    required: false
+    description: 'A comma-delimited list of existing hex color codes in the palette'
 runs:
   using: 'node16'
   main: 'dist/index.js'

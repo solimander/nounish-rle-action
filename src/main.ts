@@ -41,13 +41,15 @@ const readPngImage = async (path: string): Promise<PngImage> => {
  * Run the Github action, converting all PNG image data into a single RLE output file.
  */
 const run = async (): Promise<void> => {
-  const encoder = new PNGCollectionEncoder();
-
   try {
     const workspace = process.env.GITHUB_WORKSPACE ?? '';
 
     const outputPath = join(workspace, core.getInput('outputPath'));
     const rootPath = join(workspace, core.getInput('rootDirectoryPath'));
+    const existingPalette = core.getInput('existingPalette')?.split(',');
+
+    const encoder = new PNGCollectionEncoder(existingPalette);
+
     const partFolders = await getDirectories(rootPath);
 
     for (const folder of partFolders) {
